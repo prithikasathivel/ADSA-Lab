@@ -1,0 +1,97 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Plate {
+    int plateID;
+    struct Plate *next;
+};
+
+struct Plate *top = NULL;
+
+// Push a plate into the stack
+void push(int plateID) {
+    struct Plate *newNode;
+
+    newNode = (struct Plate *)malloc(sizeof(struct Plate));
+
+    newNode->plateID = plateID;
+    newNode->next = top;
+    top = newNode;
+
+    printf("Plate %d added to the dispenser.\n", plateID);
+}
+
+// Pop the top plate
+void pop() {
+    struct Plate *temp;
+
+    if (top == NULL) {
+        printf("Dispenser is empty. No plate to remove.\n");
+        return;
+    }
+
+    temp = top;
+    printf("Plate %d removed from the dispenser.\n", top->plateID);
+
+    top = top->next;
+    free(temp);
+}
+
+// Display all plates
+void display() {
+    struct Plate *temp = top;
+
+    if (top == NULL) {
+        printf("Dispenser is empty.\n");
+        return;
+    }
+
+    printf("\nPlates currently in the dispenser:\n");
+    printf("-----------------------------\n");
+
+    while (temp != NULL) {
+        printf("Plate ID: %d\n", temp->plateID);
+        temp = temp->next;
+    }
+}
+
+int main() {
+    int choice, plateID;
+
+    while (1) {
+        printf("\n===== Cafeteria Plate Dispenser =====\n");
+        printf("1. Push Plate\n");
+        printf("2. Remove Top Plate\n");
+        printf("3. Display Plates\n");
+        printf("4. Exit\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+
+            case 1:
+                printf("Enter Plate ID: ");
+                scanf("%d", &plateID);
+                push(plateID);
+                break;
+
+            case 2:
+                pop();
+                break;
+
+            case 3:
+                display();
+                break;
+
+            case 4:
+                printf("Program terminated.\n");
+                exit(0);
+
+            default:
+                printf("Invalid choice!\n");
+        }
+    }
+
+    return 0;
+}
